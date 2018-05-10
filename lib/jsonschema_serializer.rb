@@ -1,5 +1,5 @@
 require "jsonschema_serializer/version"
+require "jsonschema_serializer/builder"
 
 module JsonschemaSerializer
-  # Your code goes here...
 end
