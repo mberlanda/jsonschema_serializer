@@ -2,24 +2,39 @@ sudo: false
 
 language: ruby
 
-rvm:
-  - 1.8.7
-  - 1.9.3
-  - 2.0.0
-  - 2.1.5
-  - 2.2.7
-  - 2.3.4
-  - 2.4.1
-  - 2.5.0
-  - ruby-head
-  - jruby-1.7.21
-  - jruby-9.0.5.0
-
-matrix:
+jobs:
   allow_failures:
     - rvm: 1.8.7
+      gemfile: Gemfile-pre-2
     - rvm: 1.9.3
+      gemfile: Gemfile-pre-2
+    - rvm: 2.0.0
+      gemfile: Gemfile-pre-2
+    - rvm: jruby-1.7.21
+      gemfile: Gemfile-pre-2
+
+  include:
+    - rvm: 1.8.7
+      gemfile: Gemfile-pre-2
+    - rvm: 1.9.3
+      gemfile: Gemfile-pre-2
+    - rvm: 2.0.0
+      gemfile: Gemfile-pre-2
+    - rvm: jruby-1.7.21
+      gemfile: Gemfile-pre-2
+    - rvm: 2.1.5
+      gemfile: Gemfile
+    - rvm: 2.2.7
+      gemfile: Gemfile
+    - rvm: 2.3.4
+      gemfile: Gemfile
+    - rvm: 2.4.1
+      gemfile: Gemfile
+    - rvm: 2.5.0
+      gemfile: Gemfile
     - rvm: ruby-head
+      gemfile: Gemfile
+    - rvm: jruby-9.0.5.0
+      gemfile: Gemfile
 
 before_install: gem install bundler -v 1.16.1
-bundler_args: --without linting
