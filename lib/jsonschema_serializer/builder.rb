@@ -39,20 +39,12 @@ module JsonschemaSerializer
       @schema[:properties] ||= {}
     end
 
-    def string(name, **opts)
-      {
-        name => {
-          type: :string
-        }.merge(opts)
-      }
-    end
-
-    def number(name, **opts)
-      {
-        name => {
-          type: :number
-        }.merge(opts)
-      }
+    [:boolean, :integer, :number, :string].each do |attr_type|
+      define_method(attr_type) do |name, **opts|
+        {
+          name => { type: attr_type }.merge(opts)
+        }
+      end
     end
   end
 end

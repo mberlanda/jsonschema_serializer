@@ -22,10 +22,10 @@ RSpec.describe JsonschemaSerializer::Builder do
   end
 
   context 'properties on root object' do
-    it 'should add string attributes' do
+    it 'should add boolean attributes' do
       actual = builder.build do |b|
         b.properties.tap do |p|
-          p.merge! b.string :a, description: 'abc'
+          p.merge! b.boolean :a, default: true
         end
       end
 
@@ -33,8 +33,26 @@ RSpec.describe JsonschemaSerializer::Builder do
         type: :object,
         properties: {
           a: {
-            type: :string,
-            description: 'abc'
+            type: :boolean,
+            default: true
+          }
+        }
+      )
+    end
+
+    it 'should add integer attributes' do
+      actual = builder.build do |b|
+        b.properties.tap do |p|
+          p.merge! b.integer :b, maximum: 10
+        end
+      end
+
+      expect(actual.schema).to eq(
+        type: :object,
+        properties: {
+          b: {
+            type: :integer,
+            maximum: 10
           }
         }
       )
@@ -43,16 +61,34 @@ RSpec.describe JsonschemaSerializer::Builder do
     it 'should add number attributes' do
       actual = builder.build do |b|
         b.properties.tap do |p|
-          p.merge! b.number :b, description: 'bca'
+          p.merge! b.number :c, minimum: 3
         end
       end
 
       expect(actual.schema).to eq(
         type: :object,
         properties: {
-          a: {
+          c: {
             type: :number,
-            description: 'bca'
+            minimum: 3
+          }
+        }
+      )
+    end
+
+    it 'should add string attributes' do
+      actual = builder.build do |b|
+        b.properties.tap do |p|
+          p.merge! b.string :d, description: 'abc'
+        end
+      end
+
+      expect(actual.schema).to eq(
+        type: :object,
+        properties: {
+          d: {
+            type: :string,
+            description: 'abc'
           }
         }
       )
