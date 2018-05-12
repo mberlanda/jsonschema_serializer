@@ -34,5 +34,17 @@ module JsonschemaSerializer
     def required(*required)
       @schema[:required] = required
     end
+
+    def properties
+      @schema[:properties] ||= {}
+    end
+
+    def string(name, **opts)
+      {
+        name => {
+          type: :string
+        }.merge(opts)
+      }
+    end
   end
 end

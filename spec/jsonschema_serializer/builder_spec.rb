@@ -20,4 +20,26 @@ RSpec.describe JsonschemaSerializer::Builder do
       properties: {}
     })
   end
+
+  context "properties on root object" do
+
+    it "should add string attributes" do
+      actual = builder.build do |b|
+        b.properties.tap do |p|
+          p.merge! b.string :a, description: "abc"
+        end
+      end
+
+      expect(actual.schema).to eq({
+        type: :object,
+        properties: {
+          a: {
+            type: :string,
+            description: "abc"
+          }
+        }
+      })
+    end
+  end
+
 end
