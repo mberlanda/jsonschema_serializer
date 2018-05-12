@@ -1,8 +1,6 @@
 # JsonschemaSerializer
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/jsonschema_serializer`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This purpose of this gem is to generate [JsonSchema](http://json-schema.org/).
 
 ## Installation
 
@@ -22,7 +20,37 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+You should be able soon to generate a schema as follows:
+
+```ruby
+schema = JsonSchema::Builder.build do |b|
+
+  subscriber = b.object :subscriber
+  subscriber[:properties].tap do |sp|
+    sp.merge! b.string :first_name
+    sp.merge! b.string :last_name
+    sp.merge! b.integer :age
+  end
+
+  b.title "a title"
+  b.description "a description"
+  b.required :a, :b, :c
+  b.properties.tap do |p|
+    p.merge! b.string :a, description: "abc"
+    p.merge! b.array :subscribers, description: "subscribers", items: subscriber
+  end
+end
+
+schema.to_json
+```
+
+Allowed parameters for data types:
+
+- `array`  : `:default, :description, items: {}||[{}], :minItems, :maxItems, :title`
+- `boolean`: `:default, :description, :title`
+- `integer`: `:default, :description, enum: [], :minimum, :maximum, :multipleOf, :title`
+- `number` : `:default, :description, enum: [], :minimum, :maximum, :multipleOf, :title`
+- `string` : `:default, :description, :format, :minLength, :title`
 
 ## Development
 
@@ -32,4 +60,4 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/jsonschema_serializer.
+Bug reports and pull requests are welcome on GitHub at https://github.com/mberlanda/jsonschema_serializer.
