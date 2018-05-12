@@ -39,5 +39,23 @@ RSpec.describe JsonschemaSerializer::Builder do
         }
       )
     end
+
+    it 'should add number attributes' do
+      actual = builder.build do |b|
+        b.properties.tap do |p|
+          p.merge! b.number :b, description: 'bca'
+        end
+      end
+
+      expect(actual.schema).to eq(
+        type: :object,
+        properties: {
+          a: {
+            type: :number,
+            description: 'bca'
+          }
+        }
+      )
+    end
   end
 end

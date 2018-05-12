@@ -46,5 +46,13 @@ module JsonschemaSerializer
         }.merge(opts)
       }
     end
+
+    def number(name, **opts)
+      {
+        name => {
+          type: :number
+        }.merge(opts)
+      }
+    end
   end
 end
