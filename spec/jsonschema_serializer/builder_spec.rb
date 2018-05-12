@@ -43,6 +43,50 @@ RSpec.describe JsonschemaSerializer::Builder do
       )
     end
 
+    it 'should add complex array attributes' do
+      actual = builder.build do |b|
+        subscriber = b._object title: :subscriber, required: [:age] do |prop|
+          prop.merge! b.string :first_name, title: 'First Name'
+          prop.merge! b.string :last_name, title: 'Last Name'
+          prop.merge! b.integer :age, title: 'Age'
+        end
+
+        b.properties.tap do |p|
+          p.merge! b.array :subscribers, minItems: 1, items: subscriber
+        end
+      end
+
+      puts actual.to_json
+      expect(actual.schema).to eq(
+        type: :object,
+        properties: {
+          subscribers: {
+            type: :array,
+            minItems: 1,
+            items: {
+              type: :object,
+              title: :subscriber,
+              required: [:age],
+              properties: {
+                first_name: {
+                  type: :string,
+                  title: 'First Name'
+                },
+                last_name: {
+                  type: :string,
+                  title: 'Last Name'
+                },
+                age: {
+                  type: :integer,
+                  title: 'Age'
+                }
+              }
+            }
+          }
+        }
+      )
+    end
+
     it 'should add boolean attributes' do
       actual = builder.build do |b|
         b.properties.tap do |p|

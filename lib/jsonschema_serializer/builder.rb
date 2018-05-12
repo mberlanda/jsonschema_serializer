@@ -39,6 +39,12 @@ module JsonschemaSerializer
       @schema[:properties] ||= {}
     end
 
+    def _object(**opts)
+      { type: :object, properties: {} }.merge(opts).tap do |h|
+        yield(h[:properties]) if block_given?
+      end
+    end
+
     [:boolean, :integer, :number, :string].each do |attr_type|
       define_method("_#{attr_type}") do |**opts|
         { type: attr_type }.merge(opts)

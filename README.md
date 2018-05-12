@@ -25,11 +25,10 @@ You should be able soon to generate a schema as follows:
 ```ruby
 schema = JsonSchema::Builder.build do |b|
 
-  subscriber = b.object :subscriber
-  subscriber[:properties].tap do |sp|
-    sp.merge! b.string :first_name
-    sp.merge! b.string :last_name
-    sp.merge! b.integer :age
+  subscriber = b._object title: :subscriber, required: [:age] do |prop|
+    prop.merge! b.string :first_name, title: 'First Name'
+    prop.merge! b.string :last_name, title: 'Last Name'
+    prop.merge! b.integer :age, title: 'Age'
   end
 
   b.title "a title"
