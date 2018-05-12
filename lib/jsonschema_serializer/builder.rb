@@ -40,11 +40,21 @@ module JsonschemaSerializer
     end
 
     [:boolean, :integer, :number, :string].each do |attr_type|
+      define_method("_#{attr_type}") do |**opts|
+        { type: attr_type }.merge(opts)
+      end
+
       define_method(attr_type) do |name, **opts|
         {
-          name => { type: attr_type }.merge(opts)
+          name => send("_#{attr_type}", **opts)
         }
       end
+    end
+
+    def array(name, items:, **opts)
+      {
+        name => { type: :array, items: items }.merge(opts)
+      }
     end
   end
 end

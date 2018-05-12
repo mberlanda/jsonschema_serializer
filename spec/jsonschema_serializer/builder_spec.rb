@@ -22,6 +22,27 @@ RSpec.describe JsonschemaSerializer::Builder do
   end
 
   context 'properties on root object' do
+    it 'should add simple array attributes' do
+      actual = builder.build do |b|
+        b.properties.tap do |p|
+          p.merge! b.array :ary, items: b._string(default: 'foo')
+        end
+      end
+
+      expect(actual.schema).to eq(
+        type: :object,
+        properties: {
+          ary: {
+            type: :array,
+            items: {
+              type: :string,
+              default: 'foo'
+            }
+          }
+        }
+      )
+    end
+
     it 'should add boolean attributes' do
       actual = builder.build do |b|
         b.properties.tap do |p|
