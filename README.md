@@ -1,5 +1,7 @@
 # JsonschemaSerializer
 
+[![Build Status](https://travis-ci.org/mberlanda/jsonschema_serializer.svg?branch=master)](https://travis-ci.org/mberlanda/jsonschema_serializer)
+
 This purpose of this gem is to generate [JsonSchema](http://json-schema.org/).
 
 ## Installation

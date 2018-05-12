@@ -1,5 +1,25 @@
 sudo: false
+
 language: ruby
+
 rvm:
-  - 2.4.0
+  - 1.8.7
+  - 1.9.3
+  - 2.0.0
+  - 2.1.5
+  - 2.2.7
+  - 2.3.4
+  - 2.4.1
+  - 2.5.0
+  - ruby-head
+  - jruby-1.7.21
+  - jruby-9.0.5.0
+
+matrix:
+  allow_failures:
+    - rvm: 1.8.7
+    - rvm: 1.9.3
+    - rvm: ruby-head
+
 before_install: gem install bundler -v 1.16.1
+bundler_args: --without linting
