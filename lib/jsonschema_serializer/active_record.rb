@@ -26,9 +26,11 @@ module JsonschemaSerializer
         end
         JsonschemaSerializer::Builder.build do |b|
           selected_columns(klass, only, except).each do |col|
-            el = format_column_element(col)
-            # Handle basic case of attribute type and attribute name
-            b.send(el[:type], el[:name])
+            b.properties.tap do |prop|
+              el = format_column_element(col)
+              # Handle basic case of attribute type and attribute name
+              prop.merge! b.send(el[:type], el[:name])
+            end
           end
         end
       end
