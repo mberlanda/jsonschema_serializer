@@ -5,13 +5,14 @@ require_relative 'builder'
 # ActiveRecord classes with the minimum effort
 
 module JsonschemaSerializer
+  # :no-rdoc:
   module ActiveRecord
     # :no-rdoc:
-
     def self.included(klass)
       klass.extend(ClassMethods)
     end
 
+    # :no-rdoc:
     module ClassMethods
       # Serialize an ActiveRecord class into a
       # JsonschemaSerializer::Builder object
@@ -21,9 +22,7 @@ module JsonschemaSerializer
       # +only+ [Array[String]]
       # +except+ [Array[String]]
       def from_active_record(klass, only: nil, except: nil)
-        if only && except
-          raise ArgumentError, 'You cannot provide both only and except options'
-        end
+        validate_arguments(only, except)
         JsonschemaSerializer::Builder.build do |b|
           selected_columns(klass, only, except).each do |col|
             b.properties.tap do |prop|
@@ -36,6 +35,11 @@ module JsonschemaSerializer
       end
 
       private
+
+      # Raise if +only+ and +except+ are both provided
+      def validate_arguments(only, except)
+        raise ArgumentError, 'only and except options both provided' if only && except
+      end
 
       # Retrieves the columns and keep/discard some elements if needed
       def selected_columns(klass, only, except)
