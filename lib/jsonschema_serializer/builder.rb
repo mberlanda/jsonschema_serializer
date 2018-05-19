@@ -1,6 +1,7 @@
 require 'json'
 
 module JsonschemaSerializer
+  # :no-rdoc:
   class Builder
     class << self
       def build

@@ -56,7 +56,6 @@ RSpec.describe JsonschemaSerializer::Builder do
         end
       end
 
-      puts actual.to_json
       expect(actual.schema).to eq(
         type: :object,
         properties: {
