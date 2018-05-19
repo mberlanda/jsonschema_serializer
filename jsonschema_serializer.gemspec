@@ -14,13 +14,15 @@ Gem::Specification.new do |spec|
     The goal behind this gem is to generate JsonSchema.
     This can be done using thanks to a Builder class or
     an ActiveRecord serialization module.
+    The project is still at an early stage so all PR or feature request will
+    be welcome on the Github repo
   EOT
   spec.homepage      = "https://github.com/mberlanda/jsonschema_serializer"
   spec.licenses      = ['MIT']
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
-  spec.metadata  = { "source_code_uri" => "https://github.com/mberlanda/jsonschema_serialize" }
+  spec.metadata  = { "source_code_uri" => "https://github.com/mberlanda/jsonschema_serializer" }
   # if spec.respond_to?(:metadata)
   #   spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
   # else

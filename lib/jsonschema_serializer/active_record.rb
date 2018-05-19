@@ -5,14 +5,10 @@ require_relative 'builder'
 # ActiveRecord classes with the minimum effort
 
 module JsonschemaSerializer
-  # :no-rdoc:
   module ActiveRecord
-    # :no-rdoc:
     def self.included(klass)
       klass.extend(ClassMethods)
     end
-
-    # :no-rdoc:
     module ClassMethods
       # Serialize an ActiveRecord class into a
       # JsonschemaSerializer::Builder object
