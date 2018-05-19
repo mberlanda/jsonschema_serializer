@@ -22,7 +22,7 @@ Or install it yourself as:
 
 ## Usage
 
-You should be able soon to generate a schema as follows:
+You can generate a schema as follows:
 
 ```ruby
 schema = JsonSchema::Builder.build do |b|
@@ -53,6 +53,28 @@ Allowed parameters for data types:
 - `number` : `:default, :description, enum: [], :minimum, :maximum, :multipleOf, :title`
 - `string` : `:default, :description, :format, :minLength, :title`
 
+You can alternatively use an experimental builder for `ActiveRecord`
+
+
+```ruby
+class Serializer
+  include JsonschemaSerializer::ActiveRecord
+end
+
+schema = Serializer.from_active_record(MyActiveRecordClass)
+schema = Serializer.from_active_record(MyActiveRecordClass, only: %[desired1 desired2])
+schema = Serializer.from_active_record(MyActiveRecordClass, except: %[ignored1 ignored2])
+
+# You can manipulate the resulting schema
+
+schema.tap do |s|
+  s.title "a title"
+  s.description "a description"
+end
+
+schema.to_json
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -62,3 +84,4 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/mberlanda/jsonschema_serializer.
+ygy
