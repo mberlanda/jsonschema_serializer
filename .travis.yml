@@ -3,25 +3,7 @@ sudo: false
 language: ruby
 
 jobs:
-  allow_failures:
-    - rvm: 1.8.7
-      gemfile: Gemfile-pre-2
-    - rvm: 1.9.3
-      gemfile: Gemfile-pre-2
-    - rvm: 2.0.0
-      gemfile: Gemfile-pre-2
-    - rvm: jruby-1.7.21
-      gemfile: Gemfile-pre-2
-
   include:
-    - rvm: 1.8.7
-      gemfile: Gemfile-pre-2
-    - rvm: 1.9.3
-      gemfile: Gemfile-pre-2
-    - rvm: 2.0.0
-      gemfile: Gemfile-pre-2
-    - rvm: jruby-1.7.21
-      gemfile: Gemfile-pre-2
     - rvm: 2.1.5
       gemfile: Gemfile
     - rvm: 2.2.7

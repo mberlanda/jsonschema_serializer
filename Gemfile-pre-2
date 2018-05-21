@@ -1,4 +1,0 @@
-source "https://rubygems.org"
-
-# The purpose of this Gemfile is to test old ruby versions
-gemspec
