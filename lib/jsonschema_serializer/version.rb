@@ -1,3 +1,3 @@
 module JsonschemaSerializer
-  VERSION = '0.0.2'.freeze # :nodoc:
+  VERSION = '0.0.3'.freeze # :nodoc:
 end
