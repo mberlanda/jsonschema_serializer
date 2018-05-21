@@ -1,6 +1,8 @@
 # JsonschemaSerializer
 
 [![Build Status](https://travis-ci.org/mberlanda/jsonschema_serializer.svg?branch=master)](https://travis-ci.org/mberlanda/jsonschema_serializer)
+[![Gem Version](https://badge.fury.io/rb/jsonschema_serializer.svg)](https://badge.fury.io/rb/jsonschema_serializer)
+[![Maintainability](https://api.codeclimate.com/v1/badges/7312071a0865c70f5d60/maintainability)](https://codeclimate.com/github/mberlanda/jsonschema_serializer/maintainability)
 
 This purpose of this gem is to generate [JsonSchema](http://json-schema.org/).
 
@@ -25,7 +27,7 @@ Or install it yourself as:
 You can generate a schema as follows:
 
 ```ruby
-schema = JsonSchema::Builder.build do |b|
+schema = JsonschemaSerializer::Builder.build do |b|
 
   subscriber = b._object title: :subscriber, required: [:age] do |prop|
     prop.merge! b.string :first_name, title: 'First Name'

@@ -1,15 +1,15 @@
 require_relative 'builder'
 
-# The +JsonschemaSerializer::Activerecord+ module provides
-# a +from_activerecord+ class method  to serialize some
-# ActiveRecord classes with the minimum effort
-
 module JsonschemaSerializer
+  # The +JsonschemaSerializer::Activerecord+ module provides
+  # a +from_activerecord+ class method  to serialize some
+  # ActiveRecord classes with the minimum effort
   module ActiveRecord
-    def self.included(klass)
+    def self.included(klass) # :nodoc:
       klass.extend(ClassMethods)
     end
-    module ClassMethods
+
+    module ClassMethods # :nodoc:
       # Serialize an ActiveRecord class into a
       # JsonschemaSerializer::Builder object
       #
