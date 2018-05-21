@@ -19,5 +19,9 @@ Style/Documentation:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/ModuleFunction:
+  Exclude:
+    - lib/jsonschema_serializer/active_record.rb
+
 Style/SymbolArray:
   EnforcedStyle: brackets

@@ -19,10 +19,7 @@ module JsonschemaSerializer
     # The +new+ method creates assigns an empty object
     # to a +schema+ instance variable
     def initialize
-      @schema ||= {
-        type: :object,
-        properties: {}
-      }
+      @schema ||= _object
     end
 
     # The +to_json+ method exports the schema as a json string

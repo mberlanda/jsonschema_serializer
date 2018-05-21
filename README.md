@@ -59,13 +59,11 @@ You can alternatively use an experimental builder for `ActiveRecord`
 
 
 ```ruby
-class Serializer
-  include JsonschemaSerializer::ActiveRecord
-end
+serializer = JsonschemaSerializer::ActiveRecord
 
-schema = Serializer.from_active_record(MyActiveRecordClass)
-schema = Serializer.from_active_record(MyActiveRecordClass, only: %[desired1 desired2])
-schema = Serializer.from_active_record(MyActiveRecordClass, except: %[ignored1 ignored2])
+schema = serializer.from_active_record(MyActiveRecordClass)
+schema = serializer.from_active_record(MyActiveRecordClass, only: %[desired1 desired2])
+schema = serializer.from_active_record(MyActiveRecordClass, except: %[ignored1 ignored2])
 
 # You can manipulate the resulting schema
 

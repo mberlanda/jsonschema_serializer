@@ -3,10 +3,6 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
 
   it { subject.respond_to?(:from_active_record) }
 
-  class Serializer
-    include JsonschemaSerializer::ActiveRecord
-  end
-
   Column = Struct.new('Column', :type, :name, :default)
   Record = Struct.new('Record', :columns)
 
@@ -17,17 +13,17 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
       let(:record) { Record.new([]) }
 
       it 'should build' do
-        actual = Serializer.from_active_record(record)
+        actual = subject.from_active_record(record)
         expect(actual.schema).to eq(empty_schema)
       end
 
       it 'should except' do
-        actual = Serializer.from_active_record(record, except: %w[a b c])
+        actual = subject.from_active_record(record, except: %w[a b c])
         expect(actual.schema).to eq(empty_schema)
       end
 
       it 'should only' do
-        actual = Serializer.from_active_record(record, only: %w[a b c])
+        actual = subject.from_active_record(record, only: %w[a b c])
         expect(actual.schema).to eq(empty_schema)
       end
     end
@@ -37,7 +33,7 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
       let(:record) { Record.new([column]) }
 
       it 'should build' do
-        actual = Serializer.from_active_record(record)
+        actual = subject.from_active_record(record)
         expect(actual.schema).to eq(
           type: :object,
           properties: {
@@ -47,7 +43,7 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
       end
 
       it 'should except' do
-        actual = Serializer.from_active_record(record, except: %w[missing])
+        actual = subject.from_active_record(record, except: %w[missing])
         expect(actual.schema).to eq(
           type: :object,
           properties: {
@@ -57,7 +53,7 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
       end
 
       it 'should only' do
-        actual = Serializer.from_active_record(record, only: %w[missing])
+        actual = subject.from_active_record(record, only: %w[missing])
         expect(actual.schema).to eq(empty_schema)
       end
     end
@@ -75,7 +71,7 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
       end
 
       it 'should build' do
-        actual = Serializer.from_active_record(record)
+        actual = subject.from_active_record(record)
         expect(actual.schema).to eq(
           type: :object,
           properties: {
@@ -86,7 +82,7 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
       end
 
       it 'should except missing' do
-        actual = Serializer.from_active_record(record, except: %w[missing])
+        actual = subject.from_active_record(record, except: %w[missing])
         expect(actual.schema).to eq(
           type: :object,
           properties: {
@@ -97,27 +93,27 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
       end
 
       it 'should except x' do
-        actual = Serializer.from_active_record(record, except: %w[x])
+        actual = subject.from_active_record(record, except: %w[x])
         expect(actual.schema).to eq(t_schema)
       end
 
       it 'should except y' do
-        actual = Serializer.from_active_record(record, except: %w[t])
+        actual = subject.from_active_record(record, except: %w[t])
         expect(actual.schema).to eq(x_schema)
       end
 
       it 'should only missing' do
-        actual = Serializer.from_active_record(record, only: %w[missing])
+        actual = subject.from_active_record(record, only: %w[missing])
         expect(actual.schema).to eq(empty_schema)
       end
 
       it 'should only x' do
-        actual = Serializer.from_active_record(record, only: %w[x])
+        actual = subject.from_active_record(record, only: %w[x])
         expect(actual.schema).to eq(x_schema)
       end
 
       it 'should only y' do
-        actual = Serializer.from_active_record(record, only: %w[t])
+        actual = subject.from_active_record(record, only: %w[t])
         expect(actual.schema).to eq(t_schema)
       end
     end
