@@ -36,7 +36,7 @@ module JsonschemaSerializer
 
       # Retrieves the columns and keep/discard some elements if needed
       def selected_columns(klass, only, except)
-        klass.columns.tap do |cols|
+        klass.columns.dup.tap do |cols|
           cols.select! { |col| only.include?(col.name) } if only
           cols.reject! { |col| except.include?(col.name) } if except
         end

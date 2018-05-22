@@ -120,6 +120,14 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
         actual = subject.from_active_record(record, only: %w[t])
         expect(actual.schema).to eq(t_schema)
       end
+
+      it 'should manipulate a dup of columns' do
+        step1 = subject.from_active_record(record, only: %w[x])
+        expect(step1.schema).to eq(x_schema)
+
+        step2 = subject.from_active_record(record, only: %w[t])
+        expect(step2.schema).to eq(t_schema)
+      end
     end
   end
 end
