@@ -1,5 +1,9 @@
 # Changelog
 
+# not bumped yet (2018-05-22)
+
+- corrected `ActiveRecord::ConnectionAdapters::SqlTypeMetadata` reference in `JsonschemaSerializer::ActiveRecord`
+
 # v 0.0.3 (2018-05-21)
 
 - improved documentation on existing code base

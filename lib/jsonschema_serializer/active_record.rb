@@ -44,7 +44,6 @@ module JsonschemaSerializer
 
       # Mapping Ruby types on Jsonschema types.
       # This could be moved to a separate module later
-
       TYPE_CONVERSIONS = {
         boolean: :boolean,
         datetime: :string,
@@ -58,9 +57,14 @@ module JsonschemaSerializer
       def format_column_element(col)
         {}.tap do |h|
           h[:name] = col.name
-          h[:type] = TYPE_CONVERSIONS[col.type] || :string
+          h[:type] = TYPE_CONVERSIONS[sql_type(col)] || :string
           # col.default.tap { |d| h[:default] = d if d}
         end
+      end
+
+      # Format a ActiveRecord::ConnectionAdapters::SqlTypeMetadata as an Hash
+      def sql_type(col)
+        col.sql_type_metadata.type
       end
     end
   end

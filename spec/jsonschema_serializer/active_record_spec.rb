@@ -3,7 +3,8 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
 
   it { subject.respond_to?(:from_active_record) }
 
-  Column = Struct.new('Column', :type, :name, :default)
+  SqlTypeMetadata = Struct.new('SqlTypeMetadata', :type)
+  Column = Struct.new('Column', :sql_type_metadata, :name, :default)
   Record = Struct.new('Record', :columns)
 
   describe 'from_active_record' do
@@ -28,8 +29,9 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
       end
     end
 
-    context 'a one-colum record' do
-      let(:column) { Column.new(:decimal, 'present') }
+    context 'a one-column record' do
+      let(:sql_type) { SqlTypeMetadata.new(:decimal) }
+      let(:column) { Column.new(sql_type, 'present') }
       let(:record) { Record.new([column]) }
 
       it 'should build' do
@@ -58,9 +60,11 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
       end
     end
 
-    context 'a one-colum record' do
-      let(:x_column) { Column.new(:decimal, 'x') }
-      let(:t_column) { Column.new(:text, 't') }
+    context 'a n-columns record' do
+      let(:decimal_type) { SqlTypeMetadata.new(:decimal) }
+      let(:text_type) { SqlTypeMetadata.new(:text) }
+      let(:x_column) { Column.new(decimal_type, 'x') }
+      let(:t_column) { Column.new(text_type, 't') }
       let(:record) { Record.new([x_column, t_column]) }
 
       let(:x_schema) do
