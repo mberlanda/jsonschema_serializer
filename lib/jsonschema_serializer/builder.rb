@@ -23,8 +23,13 @@ module JsonschemaSerializer
     end
 
     # The +to_json+ method exports the schema as a json string
-    def to_json
-      @schema.to_json
+    # By default it would exported with a pretty print
+    #
+    # Params:
+    # +pretty+:: +Boolean+
+
+    def to_json(pretty: true)
+      pretty ? JSON.pretty_generate(@schema) : @schema.to_json
     end
 
     # Assigns the +title+ to the root schema object
@@ -193,7 +198,7 @@ module JsonschemaSerializer
     #     end
     #     b.array :subscribers, items: subscriber
     #   end
-    #
+
     def array(name, items:, **opts)
       {
         name => { type: :array, items: items }.merge(opts)
