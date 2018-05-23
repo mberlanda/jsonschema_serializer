@@ -5,13 +5,16 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
 
   SqlTypeMetadata = Struct.new('SqlTypeMetadata', :type)
   Column = Struct.new('Column', :sql_type_metadata, :name, :default)
-  Model = Struct.new('Model', :columns)
+  ModelName = Struct.new('ModelName', :human)
+  Model = Struct.new('Model', :columns, :model_name)
 
   describe 'from_model' do
-    let(:empty_schema) { { type: :object, properties: {} } }
+    let(:table_name) { 'Table name' }
+    let(:model_name) { ModelName.new(table_name) }
+    let(:empty_schema) { { title: table_name, type: :object, properties: {} } }
 
     context 'an empty model' do
-      let(:model) { Model.new([]) }
+      let(:model) { Model.new([], model_name) }
 
       it 'should build' do
         actual = subject.from_model(model)
@@ -32,11 +35,12 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
     context 'a one-column model' do
       let(:sql_type) { SqlTypeMetadata.new(:decimal) }
       let(:column) { Column.new(sql_type, 'present') }
-      let(:model) { Model.new([column]) }
+      let(:model) { Model.new([column], model_name) }
 
       it 'should build' do
         actual = subject.from_model(model)
         expect(actual.schema).to eq(
+          title: table_name,
           type: :object,
           properties: {
             'present' => { type: :number }
@@ -47,6 +51,7 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
       it 'should except' do
         actual = subject.from_model(model, except: %w[missing])
         expect(actual.schema).to eq(
+          title: table_name,
           type: :object,
           properties: {
             'present' => { type: :number }
@@ -65,18 +70,19 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
       let(:text_type) { SqlTypeMetadata.new(:text) }
       let(:x_column) { Column.new(decimal_type, 'x') }
       let(:t_column) { Column.new(text_type, 't') }
-      let(:model) { Model.new([x_column, t_column]) }
+      let(:model) { Model.new([x_column, t_column], model_name) }
 
       let(:x_schema) do
-        { type: :object, properties: { 'x' => { type: :number } } }
+        { title: table_name, type: :object, properties: { 'x' => { type: :number } } }
       end
       let(:t_schema) do
-        { type: :object, properties: { 't' => { type: :string } } }
+        { title: table_name, type: :object, properties: { 't' => { type: :string } } }
       end
 
       it 'should build' do
         actual = subject.from_model(model)
         expect(actual.schema).to eq(
+          title: table_name,
           type: :object,
           properties: {
             'x' => { type: :number },
@@ -88,6 +94,7 @@ RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
       it 'should except missing' do
         actual = subject.from_model(model, except: %w[missing])
         expect(actual.schema).to eq(
+          title: table_name,
           type: :object,
           properties: {
             'x' => { type: :number },
