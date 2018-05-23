@@ -17,14 +17,8 @@ module JsonschemaSerializer
       def from_model(klass, only: nil, except: nil)
         validate_arguments(only, except)
         JsonschemaSerializer::Builder.build do |b|
-          b.title schema_title(klass)
-          selected_columns(klass, only, except).each do |col|
-            b.properties.tap do |prop|
-              el = format_column_element(col)
-              # Handle basic case of attribute type and attribute name
-              prop.merge! b.send(el[:type], el[:name])
-            end
-          end
+          format_schema_attributes(klass, b)
+          format_schema_properties(selected_columns(klass), b)
         end
       end
 
@@ -36,6 +30,37 @@ module JsonschemaSerializer
 
       def validate_arguments(only, except)
         raise ArgumentError, 'only and except options both provided' if only && except
+        @only = only
+        @except = except
+      end
+
+      # Format JsonSchema general attributes such as title, required
+      #
+      # Params:
+      # +klass+:: +ActiveRecord::Base+ class name
+      # +builder+:: +JsonschemaSerializer::Builder+ an instance of the builder
+
+      def format_schema_attributes(klass, builder)
+        builder.title schema_title(klass)
+        required(klass).tap do |required|
+          builder.required required unless required.empty?
+        end
+      end
+
+      # Format JsonSchema properties
+      #
+      # Params:
+      # +columns+:: +Array+ array of formatted
+      # +builder+:: +JsonschemaSerializer::Builder+ an instance of the builder
+
+      def format_schema_properties(columns, builder)
+        builder.properties.tap do |prop|
+          columns.each do |col|
+            el = format_column_element(col)
+            # Handle basic case of attribute type and attribute name
+            prop.merge! builder.send(el[:type], el[:name])
+          end
+        end
       end
 
       # Extract schema title from ActiveRecord class
@@ -48,6 +73,29 @@ module JsonschemaSerializer
         klass.model_name.human
       end
 
+      # Filter required ActiveRecord class implementation with only/except
+      #
+      # Params:
+      # +columns+:: +Array+ column names as +Symbol+
+
+      # Extract required attributes from ActiveRecord class implementation
+      # This method can be overridden when inheriting from this class
+      #
+      # Params:
+      # +klass+:: +ActiveRecord::Base+ class name
+      def required(klass)
+        required_from_class(klass).tap do |req|
+          return req & @only if @only
+          return req - @except if @except
+        end
+      end
+
+      def required_from_class(klass)
+        klass.validators.select do |validator|
+          validator.class.to_s == 'ActiveRecord::Validations::PresenceValidator'
+        end.map(&:attributes).flatten
+      end
+
       # Retrieves the columns and keep/discard some elements if needed
       #
       # Params:
@@ -55,10 +103,10 @@ module JsonschemaSerializer
       # +only+:: +Array+ columns as +String+
       # +except+:: +Array+ columns as +String+
 
-      def selected_columns(klass, only, except)
+      def selected_columns(klass)
         klass.columns.dup.tap do |cols|
-          cols.select! { |col| only.include?(col.name) } if only
-          cols.reject! { |col| except.include?(col.name) } if except
+          cols.select! { |col| @only.include?(col.name) } if @only
+          cols.reject! { |col| @except.include?(col.name) } if @except
         end
       end
 
