@@ -2,7 +2,7 @@ require_relative 'builder'
 
 module JsonschemaSerializer
   # The +JsonschemaSerializer::Activerecord+ class provides
-  # a +from_active_record+ class method to serialize some
+  # a +from_model+ class method to serialize some
   # ActiveRecord classes with the minimum effort
   class ActiveRecord
     class << self
@@ -14,7 +14,7 @@ module JsonschemaSerializer
       # +only+:: +Array+ columns as +String+
       # +except+:: +Array+ columns as +String+
 
-      def from_active_record(klass, only: nil, except: nil)
+      def from_model(klass, only: nil, except: nil)
         validate_arguments(only, except)
         JsonschemaSerializer::Builder.build do |b|
           selected_columns(klass, only, except).each do |col|
