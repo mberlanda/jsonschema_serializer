@@ -75,6 +75,38 @@ end
 schema.to_json
 ```
 
+## Rails
+
+At this stage, a first usage within a Rails application could be a rake task dumping the schemas inside the public folder.
+
+```rb
+# lib/tasks/jsonschemas.rake
+require 'fileutils'
+
+task dump_jsonschemas: :environment do
+  Rails.application.eager_load!
+  models = ActiveRecord::Base.descendants
+
+  output_path = Rails.root.join('public', 'data')
+  # Ensure that the destination path exists
+  FileUtils.mkdir_p(output_path)
+
+  models.each do |model|
+    # Skip abstract classes
+    if model.table_name
+      file_path = output_path.join("#{model.model_name.param_key}.json")
+      schema = JsonschemaSerializer::ActiveRecord.from_model(model)
+
+      puts "Creating #{file_path} ..."
+      File.open(file_path, 'w') { |f| f.write(schema.to_json) }
+    else
+      puts "Skipping abstract class #{model.to_s} ..."
+    end
+  end
+end
+
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -84,4 +116,3 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/mberlanda/jsonschema_serializer.
-ygy
