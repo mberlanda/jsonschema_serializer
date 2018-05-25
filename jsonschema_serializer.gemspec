@@ -9,10 +9,11 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Mauro Berlanda"]
   spec.email         = ["mauro.berlanda@gmail.com"]
 
-  spec.summary       = %q{The gem is to generate JsonSchema}
+  spec.summary       = %q{Generate JsonSchema in Rails or standalone Ruby}
   spec.description   = <<-EOT
     This gem allows to generate JsonSchema thanks to a Builder class or
-    an ActiveRecord serialization class.
+    an ActiveRecord serialization class. It can be used in Rails 4, 5 or
+    Ruby standalone projects.
     The output validation is done agains json-schema.
   EOT
   spec.homepage      = "https://github.com/mberlanda/jsonschema_serializer"
@@ -28,9 +29,7 @@ Gem::Specification.new do |spec|
   #    "public gem pushes."
   # end
 
-  spec.files         = `git ls-files -z`.split("\x0").reject do |f|
-    f.match(%r{^(test|spec|features)/})
-  end
+  spec.files = Dir.glob("lib/**/*") + %w(jsonschema_serializer.gemspec README.md)
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]

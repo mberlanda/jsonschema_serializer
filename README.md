@@ -7,6 +7,7 @@
 
 This purpose of this gem is to generate [JsonSchema](http://json-schema.org/).
 This can be achieved with a builder class or an `ActiveRecord` wrapper.
+The gem is available for both Rails 4, 5 or in Ruby standalone projects.
 
 Since the project is still at an early stage, please do not hesitate to [open issues / feature requests](https://github.com/mberlanda/jsonschema_serializer/issues) or fork this repo for pull requests.
 
@@ -83,7 +84,7 @@ schema.to_json
 
 At this stage, a first usage within a Rails application could be a rake task dumping the schemas inside the public folder.
 
-```rb
+```ruby
 # lib/tasks/jsonschemas.rake
 require 'fileutils'
 
@@ -120,3 +121,4 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/mberlanda/jsonschema_serializer.
+Please ensure to keep the test coverage at 100% and follow the angularjs [commit message conv.entions](https://gist.github.com/stephenparish/9941e89d80e2bc58a153#subject-line).
