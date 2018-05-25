@@ -2,22 +2,28 @@ sudo: false
 
 language: ruby
 
-jobs:
-  include:
+gemfile:
+  - gemfiles/rails_4.gemfile
+  - gemfiles/rails_5.gemfile
+
+rvm:
+  - 2.1.5
+  - 2.2.7
+  - 2.3.4
+  - 2.4.1
+  - 2.5.0
+  - ruby-head
+
+matrix:
+  exclude:
     - rvm: 2.1.5
-      gemfile: Gemfile
-    - rvm: 2.2.7
-      gemfile: Gemfile
-    - rvm: 2.3.4
-      gemfile: Gemfile
-    - rvm: 2.4.1
-      gemfile: Gemfile
-    - rvm: 2.5.0
-      gemfile: Gemfile
-    - rvm: ruby-head
-      gemfile: Gemfile
+      gemfile: gemfiles/rails_5.gemfile
+  include:
     - rvm: jruby-9.0.5.0
       gemfile: Gemfile
+      env:
+        - RAILS_ENV=none
+        - SKIP_RAILS=true
 
 before_install: gem install bundler -v 1.16.1
 

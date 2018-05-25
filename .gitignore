@@ -15,3 +15,8 @@
 
 Gemfile.lock
 coverage
+
+# appraisals
+gemfiles/.bundle/
+spec/dummy/db/development.sqlite3
+spec/dummy/log/

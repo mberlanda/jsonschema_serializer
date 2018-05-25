@@ -45,7 +45,7 @@ module JsonschemaSerializer
       def format_schema_attributes(klass, builder)
         builder.title schema_title(klass)
         required(klass).tap do |required|
-          builder.required required unless required.empty?
+          builder.required(*required) unless required.empty?
         end
       end
 
@@ -80,17 +80,24 @@ module JsonschemaSerializer
       # Params:
       # +columns+:: +Array+ column names as +Symbol+
 
-      # Extract required attributes from ActiveRecord class implementation
+      # Filter required class attributes with only/filters attributes
       # This method can be overridden when inheriting from this class
       #
       # Params:
       # +klass+:: +ActiveRecord::Base+ class name
+
       def required(klass)
         required_from_class(klass).tap do |req|
           return req & @only if @only
           return req - @except if @except
         end
       end
+
+      # Extract required attributes from ActiveRecord class implementation
+      # This method can be overridden when inheriting from this class
+      #
+      # Params:
+      # +klass+:: +ActiveRecord::Base+ class name
 
       def required_from_class(klass)
         klass.validators.select do |validator|
@@ -121,7 +128,8 @@ module JsonschemaSerializer
         decimal: :number,
         float: :number,
         integer: :integer,
-        text: :string
+        text: :string,
+        varchar: :string
       }.freeze
 
       # Format a ActiveRecord::ConnectionAdapters::<Adapter>::Column as an Hash
@@ -143,7 +151,9 @@ module JsonschemaSerializer
       # +col+:: +ActiveRecord::ConnectionAdapters::<Adapter>::Column+ column
 
       def sql_type(col)
-        col.sql_type_metadata.type
+        return col.sql_type_metadata.type if col.respond_to?(:sql_type_metadata)
+        # Rails 4 backward compatibility
+        col.sql_type.downcase.to_sym
       end
     end
   end

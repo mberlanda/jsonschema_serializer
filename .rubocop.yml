@@ -2,9 +2,12 @@ AllCops:
   TargetRubyVersion: 2.4
   Exclude:
     - bin/*
+    - spec/dummy/bin/*
+    - spec/dummy/config/initializers/*
     - "*.gemspec"
     - Gemfile
     - Rakefile
+    - spec/dummy/Rakefile
 
 Metrics/BlockLength:
   Exclude:
