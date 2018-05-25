@@ -9,13 +9,11 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Mauro Berlanda"]
   spec.email         = ["mauro.berlanda@gmail.com"]
 
-  spec.summary       = %q{The purpose of this gem is to generate JsonSchema}
+  spec.summary       = %q{The gem is to generate JsonSchema}
   spec.description   = <<-EOT
-    The goal behind this gem is to generate JsonSchema.
-    This can be done using thanks to a Builder class or
-    an ActiveRecord serialization module.
-    The project is still at an early stage so all PR or feature request will
-    be welcome on the Github repo
+    This gem allows to generate JsonSchema thanks to a Builder class or
+    an ActiveRecord serialization class.
+    The output validation is done agains json-schema.
   EOT
   spec.homepage      = "https://github.com/mberlanda/jsonschema_serializer"
   spec.licenses      = ['MIT']

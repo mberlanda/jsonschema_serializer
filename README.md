@@ -5,6 +5,9 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/7312071a0865c70f5d60/maintainability)](https://codeclimate.com/github/mberlanda/jsonschema_serializer/maintainability)
 
 This purpose of this gem is to generate [JsonSchema](http://json-schema.org/).
+This can be achieved with a builder class or an `ActiveRecord` wrapper.
+
+Since the project is still at an early stage, please do not hesitate to [open issues / feature requests](https://github.com/mberlanda/jsonschema_serializer/issues) or fork this repo for pull requests.
 
 ## Installation
 
