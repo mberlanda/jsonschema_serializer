@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'JsonschemaSerializer::ActiveRecord' do
   subject { JsonschemaSerializer::ActiveRecord }
 

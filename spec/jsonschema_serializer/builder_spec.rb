@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe JsonschemaSerializer::Builder do
   let(:builder) { JsonschemaSerializer::Builder }
 
