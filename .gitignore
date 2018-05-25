@@ -6,17 +6,19 @@
 /pkg/
 /spec/reports/
 /tmp/
+/vendor/
 
 # rspec failure tracking
 .rspec_status
 .byebug_history
 .ruby-version
-.gem
+*.gem
 
 Gemfile.lock
 coverage
 
 # appraisals
 gemfiles/.bundle/
+gemfiles/vendor/
 spec/dummy/db/development.sqlite3
 spec/dummy/log/
