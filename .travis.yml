@@ -20,3 +20,16 @@ jobs:
       gemfile: Gemfile
 
 before_install: gem install bundler -v 1.16.1
+
+# exported CC_TEST_REPORTER_ID global var in travis
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+script:
+  - bundle exec rspec
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/mberlanda/jsonschema_serializer.svg?branch=master)](https://travis-ci.org/mberlanda/jsonschema_serializer)
 [![Gem Version](https://badge.fury.io/rb/jsonschema_serializer.svg)](https://badge.fury.io/rb/jsonschema_serializer)
 [![Maintainability](https://api.codeclimate.com/v1/badges/7312071a0865c70f5d60/maintainability)](https://codeclimate.com/github/mberlanda/jsonschema_serializer/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/7312071a0865c70f5d60/test_coverage)](https://codeclimate.com/github/mberlanda/jsonschema_serializer/test_coverage)
 
 This purpose of this gem is to generate [JsonSchema](http://json-schema.org/).
 This can be achieved with a builder class or an `ActiveRecord` wrapper.
