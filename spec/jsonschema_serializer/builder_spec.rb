@@ -158,4 +158,62 @@ RSpec.describe JsonschemaSerializer::Builder do
       )
     end
   end
+
+  describe 'generate valid json schemas' do
+    let(:schema) do
+      builder.build do |b|
+        b.title 'a title'
+        b.description 'a description'
+        b.required :a, :b, :c
+        b.properties.tap do |p|
+          p.merge! b.string :a, minLength: 2
+          p.merge! b.number :b, maximum: 10
+          p.merge! b.array :c, minItems: 1, items: b._integer
+          p.merge! b.boolean :d
+          p.merge! b.integer :e, enum: [1, 2, 3]
+        end
+      end.schema
+    end
+
+    it 'should fail for empty data' do
+      expect(JSON::Validator.validate(schema, {})).to eq(false)
+    end
+
+    it 'should fail for missing required keys' do
+      expect(JSON::Validator.validate(schema, a: 'ab')).to eq(false)
+    end
+
+    context 'irrespective of required keys constraints' do
+      let(:valid_data) { { a: 'ab', b: 9.9, c: [1] } }
+
+      it 'should succeed with valid data' do
+        expect(JSON::Validator.validate(schema, valid_data)).to eq(true)
+      end
+
+      it 'should fail for string minLenght' do
+        min_length = valid_data.merge(a: '')
+        expect(JSON::Validator.validate(schema, min_length)).to eq(false)
+      end
+
+      it 'should fail for number maximum' do
+        maximum = valid_data.merge(b: 10.1)
+        expect(JSON::Validator.validate(schema, maximum)).to eq(false)
+      end
+
+      it 'should fail for array minItems' do
+        min_items = valid_data.merge(c: [])
+        expect(JSON::Validator.validate(schema, min_items)).to eq(false)
+      end
+
+      it 'should fail for integer enum' do
+        enum_fail = valid_data.merge(e: 4)
+        expect(JSON::Validator.validate(schema, enum_fail)).to eq(false)
+      end
+
+      it 'should fail for wrong type' do
+        type_fail = valid_data.merge(d: 4)
+        expect(JSON::Validator.validate(schema, type_fail)).to eq(false)
+      end
+    end
+  end
 end

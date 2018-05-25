@@ -40,6 +40,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "json-schema", "~> 2.8"
 
   spec.extra_rdoc_files = ['README.md']
   spec.rdoc_options << '--title' << 'Jsonschema Serializer' <<
