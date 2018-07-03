@@ -5,10 +5,13 @@ AllCops:
     - spec/dummy/bin/*
     - spec/dummy/config/initializers/*
     - "*.gemspec"
-    - Gemfile
     - Rakefile
     - spec/dummy/Rakefile
+    - gemfiles/vendor/**/*
     - vendor/**/*
+
+Gemspec/RequiredRubyVersion:
+  Enabled: false
 
 Metrics/BlockLength:
   Exclude:
