@@ -20,5 +20,6 @@ coverage
 # appraisals
 gemfiles/.bundle/
 gemfiles/vendor/
+gemfiles/*.lock
 spec/dummy/db/development.sqlite3
 spec/dummy/log/

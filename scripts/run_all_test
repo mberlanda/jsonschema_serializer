@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+IFS=$'\n\t'
+
+ROOT_PATH=$(git rev-parse --show-toplevel)
+
+BUNDLER_VERSION=1.16.2
+
+RUBY_VERSIONS=(
+  "2.2.7"
+  "2.3.4"
+  "2.4.1"
+  "2.5.0"
+)
+
+RUBY_MANAGERS=(
+  "rvm"
+  "rbenv"
+)
+export RUBY_MANAGER
+
+GEMFILES=($(ls ${ROOT_PATH}/gemfiles/*.gemfile))
+
+function program_installed {
+  type "$1" &> /dev/null
+}
+
+function choose_ruby_manager {
+  for RUBY_VERSION_MANAGER in "${RUBY_MANAGERS[@]}"; do
+    if program_installed ${RUBY_VERSION_MANAGER}; then
+      RUBY_MANAGER=${RUBY_VERSION_MANAGER}
+    fi
+  done
+  if [ -z "${RUBY_MANAGER}" ]; then
+    echo -e "Please install one of the following ruby version managers: ${RUBY_MANAGERS}"
+    exit 1
+  fi
+}
+
+function rbenv_use {
+  if rbenv local $1 &> /dev/null; then
+    rbenv local $1
+  else
+  	echo -e "Installing ruby $1"
+    rbenv install $1
+    rbenv local $1
+  fi
+}
+
+function rvm_use {
+  if rvm use $1 &> /dev/null; then
+    rvm use $1
+  else
+  	echo -e "Installing ruby $1"
+    rvm install $1
+    rvm use $1
+  fi
+}
+
+function main {
+  choose_ruby_manager
+  echo -e "Running tests using ${RUBY_MANAGER} ..."
+  for GEMFILE in "${GEMFILES[@]}"; do
+    export DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+    for RUBY_VERSION in "${RUBY_VERSIONS[@]}"; do
+      echo -e "Testing ${GEMFILE} with ruby ${RUBY_VERSION} ..."
+      if [ "${RUBY_MANAGER}" == 'rvm' ]; then rvm_use ${RUBY_VERSION}; fi
+      if [ "${RUBY_MANAGER}" == 'rbenv' ]; then rbenv_use ${RUBY_VERSION}; fi
+      gem install bundler -v ${BUNDLER_VERSION} --quiet --conservative
+      BUNDLE_GEMFILE=${GEMFILE} bundle install --quiet
+      BUNDLE_GEMFILE=${GEMFILE} RAILS_ENV=test bundle exec rspec spec --format progress
+    done
+  done
+}
+
+main

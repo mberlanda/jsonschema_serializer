@@ -8,6 +8,7 @@ ENV['RAILS_ENV'] ||= 'test'
 
 SimpleCov.start do
   add_filter '/spec/'
+  add_filter '/vendor/'
 end
 
 require 'jsonschema_serializer'

@@ -8,6 +8,7 @@ AllCops:
     - Gemfile
     - Rakefile
     - spec/dummy/Rakefile
+    - vendor/**/*
 
 Metrics/BlockLength:
   Exclude:
