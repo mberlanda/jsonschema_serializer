@@ -14,4 +14,5 @@ group :test do
   gem 'json-schema', '~> 2.8'
   gem 'simplecov', '~> 0.16'
   gem 'simplecov-console', '~> 0.4.2'
+  gem 'sqlite3'
 end
