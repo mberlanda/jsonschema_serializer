@@ -5,9 +5,15 @@
 source 'https://rubygems.org'
 
 gem 'rails', '5.2.0'
-gem 'rubocop', '~> 0.55.0'
-gem 'sqlite3'
-
 gem 'rspec-rails', '~> 3.7', group: :test
+gem 'rubocop', '~> 0.55.0'
+
+group :test do
+  gem 'appraisal', '~> 2.2'
+  gem 'json-schema', '~> 2.8'
+  gem 'simplecov', '~> 0.16'
+  gem 'simplecov-console', '~> 0.4.2'
+  gem 'sqlite3'
+end
 
 gemspec path: '../'

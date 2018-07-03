@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+IFS=$'\n\t'
+
+BUNDLER_VERSION=1.16.2
+
+function main {
+  gem install bundler -v ${BUNDLER_VERSION} --quiet --conservative
+  bundle install --quiet
+  bundle exec appraisal
+  bundle exec rubocop --auto-correct
+}
+
+main
