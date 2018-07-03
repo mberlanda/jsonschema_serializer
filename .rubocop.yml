@@ -4,7 +4,6 @@ AllCops:
     - bin/*
     - spec/dummy/bin/*
     - spec/dummy/config/initializers/*
-    - "*.gemspec"
     - Rakefile
     - spec/dummy/Rakefile
     - gemfiles/vendor/**/*
@@ -15,10 +14,17 @@ Gemspec/RequiredRubyVersion:
 
 Metrics/BlockLength:
   Exclude:
+    - jsonschema_serializer.gemspec
     - spec/**/*
 
 Metrics/LineLength:
   Max: 86
+  Exclude:
+    - jsonschema_serializer.gemspec
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - jsonschema_serializer.gemspec
 
 Style/RedundantFreeze:
   Enabled: false
