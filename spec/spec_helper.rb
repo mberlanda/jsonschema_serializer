@@ -3,9 +3,11 @@
 require 'bundler/setup'
 require 'json-schema'
 require 'simplecov'
+require 'simplecov-console'
 
 ENV['RAILS_ENV'] ||= 'test'
 
+SimpleCov.formatter = SimpleCov::Formatter::Console
 SimpleCov.start do
   add_filter '/spec/'
   add_filter '/vendor/'

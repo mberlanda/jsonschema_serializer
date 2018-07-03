@@ -39,6 +39,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "json-schema", "~> 2.8"
   spec.add_development_dependency "simplecov", "~> 0.16"
+  spec.add_development_dependency "simplecov-console", "~> 0.4.2"
   spec.add_development_dependency "appraisal", "~> 2.2"
 
   spec.extra_rdoc_files = ['README.md']
