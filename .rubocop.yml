@@ -4,7 +4,6 @@ AllCops:
     - bin/*
     - spec/dummy/bin/*
     - spec/dummy/config/initializers/*
-    - Rakefile
     - spec/dummy/Rakefile
     - gemfiles/vendor/**/*
     - vendor/**/*
