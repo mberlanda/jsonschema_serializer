@@ -20,11 +20,28 @@ module JsonschemaSerializer
         allowed_obj_attributes.concat(list.map(&:to_s))
       end
 
+      # When defining a sub class, declare which attributes
+      # should be excluded.
+      #
+      # Params:
+      # +only+:: +Array+ columns as +Symbol+
+
+      def excluded_attributes(*list)
+        excluded_obj_attributes.concat(list.map(&:to_s))
+      end
+
       # Store allowed attributes for a given object/class
       # These can be set in several times
 
       def allowed_obj_attributes
         @allowed_obj_attributes ||= []
+      end
+
+      # Store excluded attributes for a given object/class
+      # These can be set in several times
+
+      def excluded_obj_attributes
+        @excluded_obj_attributes ||= []
       end
     end
   end
