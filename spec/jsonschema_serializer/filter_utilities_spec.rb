@@ -13,20 +13,36 @@ RSpec.describe 'JsonschemaSerializer::FilterUtilities' do
   it { subject.respond_to?(:excluded_obj_attributes) }
 
   context 'allowed attributes' do
-    class AttributesSerializer
+    class AllowingSerializer
       include JsonschemaSerializer::FilterUtilities
       allowed_attributes :a, :b, :c
       allowed_attributes 'b', 'c', 'd'
-      excluded_attributes :a, 'b'
     end
 
     it 'should store multiple allowed_attributes' do
-      expect(AttributesSerializer.allowed_obj_attributes)
+      expect(AllowingSerializer.allowed_obj_attributes)
         .to eq(%w[a b c b c d])
     end
 
-    it 'should store multiple allowed_attributes' do
-      expect(AttributesSerializer.excluded_obj_attributes)
+    it 'raises if declared after an excluded_attributes' do
+      expect do
+        class InvalidSerializer
+          include JsonschemaSerializer::FilterUtilities
+          excluded_attributes :a, :b, :c
+          allowed_attributes 'b', 'c', 'd'
+        end.to raise_error(JsonschemaSerializer::AllowedExcludedError)
+      end
+    end
+  end
+
+  context 'excluded attributes' do
+    class ExcludingSerializer
+      include JsonschemaSerializer::FilterUtilities
+      excluded_attributes :a, 'b'
+    end
+
+    it 'should store multiple excluded_attributes' do
+      expect(ExcludingSerializer.excluded_obj_attributes)
         .to eq(%w[a b])
     end
   end

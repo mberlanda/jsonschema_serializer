@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'error'
+
 module JsonschemaSerializer
   # Module containing utilities functions for filtering
   module FilterUtilities
@@ -14,9 +16,10 @@ module JsonschemaSerializer
       # should be allowed.
       #
       # Params:
-      # +only+:: +Array+ columns as +Symbol+
+      # +list+:: +Array+ columns as +Symbol+
 
       def allowed_attributes(*list)
+        raise AllowedExcludedError unless excluded_obj_attributes.empty?
         allowed_obj_attributes.concat(list.map(&:to_s))
       end
 
@@ -24,9 +27,10 @@ module JsonschemaSerializer
       # should be excluded.
       #
       # Params:
-      # +only+:: +Array+ columns as +Symbol+
+      # +list+:: +Array+ columns as +Symbol+
 
       def excluded_attributes(*list)
+        raise AllowedExcludedError unless allowed_obj_attributes.empty?
         excluded_obj_attributes.concat(list.map(&:to_s))
       end
 
