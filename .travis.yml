@@ -7,7 +7,6 @@ gemfile:
   - gemfiles/rails_5.gemfile
 
 rvm:
-  - 2.1.5
   - 2.2.7
   - 2.3.4
   - 2.4.4
@@ -15,10 +14,11 @@ rvm:
   - ruby-head
 
 matrix:
-  exclude:
-    - rvm: 2.1.5
-      gemfile: gemfiles/rails_5.gemfile
   include:
+    - rvm: 2.1.5
+      gemfile: gemfiles/rails_4.gemfile
+      env:
+        - CODE_COVERAGE=true
     - rvm: jruby-9.0.5.0
       gemfile: Gemfile
       env:
@@ -30,12 +30,10 @@ before_install: gem install bundler -v 1.16.1
 # exported CC_TEST_REPORTER_ID global var in travis
 
 before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
+  - ./ci/before_script
 
 script:
-  - bundle exec rspec
+  - bundle exec rspec --format progress
 
 after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - ./ci/after_script

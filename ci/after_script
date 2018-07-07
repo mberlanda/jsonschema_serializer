@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+IFS=$'\n\t'
+
+function main {
+  if [ "${CODE_COVERAGE:-false}" = 'true' ]; then
+   ./cc-test-reporter after-build --exit-code ${TRAVIS_TEST_RESULT:-1}
+  fi
+}
+
+main

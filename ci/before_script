@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+IFS=$'\n\t'
+
+function main {
+  if [ "${CODE_COVERAGE:-false}" = 'true' ]; then
+    CODE_CLIMATE_URL=https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+    curl -L ${CODE_CLIMATE_URL} > ./cc-test-reporter
+    chmod +x ./cc-test-reporter
+    ./cc-test-reporter before-build
+  fi
+}
+
+main
