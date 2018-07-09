@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'json'
+require_relative 'types'
 
 module JsonschemaSerializer
   # The +JsonschemaSerializer::Builder+ class provides
@@ -171,7 +172,7 @@ module JsonschemaSerializer
     #   end
 
     def _object(**opts)
-      { type: :object, properties: {} }.merge(opts).tap do |h|
+      JsonschemaSerializer::Types::Object.empty(opts).tap do |h|
         yield(h[:properties]) if block_given?
       end
     end
