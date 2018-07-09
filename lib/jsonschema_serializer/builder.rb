@@ -22,7 +22,7 @@ module JsonschemaSerializer
     # The +new+ method creates assigns an empty object
     # to a +schema+ instance variable
     def initialize
-      @schema ||= _object
+      @schema ||= JsonschemaSerializer::Types::Object.empty
     end
 
     # The +to_json+ method exports the schema as a json string
@@ -96,7 +96,7 @@ module JsonschemaSerializer
 
     # A base representation of the +integer+ type.
     def _integer(**opts)
-      { type: :integer }.merge(opts)
+      JsonschemaSerializer::Types::Integer.empty(**opts)
     end
 
     # A property representation of the +integer+ type.
@@ -114,12 +114,12 @@ module JsonschemaSerializer
     # +multipleOf+:: +Integer+ property conditional constraint
 
     def integer(name, **opts)
-      { name => _integer(opts) }
+      JsonschemaSerializer::Types::Integer.named(name, **opts)
     end
 
     # A base representation of the +number+ type.
     def _number(**opts)
-      { type: :number }.merge(opts)
+      JsonschemaSerializer::Types::Number.empty(**opts)
     end
 
     # A property representation of the +number+ type.
@@ -137,7 +137,7 @@ module JsonschemaSerializer
     # +multipleOf+:: +Numeric+ property conditional constraint
 
     def number(name, **opts)
-      { name => _number(opts) }
+      JsonschemaSerializer::Types::Number.named(name, **opts)
     end
 
     # A base representation of the +string+ type.
@@ -172,7 +172,7 @@ module JsonschemaSerializer
     #   end
 
     def _object(**opts)
-      JsonschemaSerializer::Types::Object.empty(opts).tap do |h|
+      JsonschemaSerializer::Types::Object.empty(**opts).tap do |h|
         yield(h[:properties]) if block_given?
       end
     end
