@@ -62,5 +62,15 @@ module JsonschemaSerializer
         end
       end
     end
+
+    # String type for jsonschema serializer
+    class String < JsonschemaSerializer::Types::Base
+      class << self
+        # Default Hash structure
+        def default_hash
+          { type: :string }
+        end
+      end
+    end
   end
 end

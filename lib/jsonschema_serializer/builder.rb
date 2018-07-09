@@ -142,7 +142,7 @@ module JsonschemaSerializer
 
     # A base representation of the +string+ type.
     def _string(**opts)
-      { type: :string }.merge(opts)
+      JsonschemaSerializer::Types::String.empty(**opts)
     end
 
     # A property representation of the +string+ type.
@@ -158,7 +158,7 @@ module JsonschemaSerializer
     # +minLength+:: +Int+ property minimum length
 
     def string(name, **opts)
-      { name => _string(opts) }
+      JsonschemaSerializer::Types::String.named(name, **opts)
     end
 
     # A base representation of the +object+ type.

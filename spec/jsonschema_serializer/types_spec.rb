@@ -60,4 +60,19 @@ RSpec.describe 'JsonschemaSerializer types' do
       )
     end
   end
+
+  describe JsonschemaSerializer::Types::String do
+    subject { JsonschemaSerializer::Types::String }
+
+    it { expect(subject.superclass).to eq(JsonschemaSerializer::Types::Base) }
+    it { expect(subject.default_hash).to eq(type: :string) }
+    it { expect(subject.empty).to eq(type: :string) }
+    it { expect(subject.empty(a: 1)).to eq(type: :string, a: 1) }
+    it { expect(subject.named(:foo)).to eq(foo: { type: :string }) }
+    it do
+      expect(subject.named(:foo, bar: :baz)).to eq(
+        foo: { type: :string, bar: :baz }
+      )
+    end
+  end
 end
