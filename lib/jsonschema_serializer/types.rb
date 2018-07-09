@@ -32,6 +32,27 @@ module JsonschemaSerializer
       end
     end
 
+    # Array type for jsonschema serializer
+    class Array < JsonschemaSerializer::Types::Base
+      class << self
+        # Default Hash structure
+        def default_hash
+          { type: :array }
+        end
+
+        # Default empty array
+        #
+        # Params:
+        # +items+:: an object representation or an array of objects
+        #
+
+        def empty(items:, **opts)
+          super(**opts)
+            .yield_self { |h| h.merge(items: items) }
+        end
+      end
+    end
+
     # Boolean type for jsonschema serializer
     class Boolean < JsonschemaSerializer::Types::Base
       class << self

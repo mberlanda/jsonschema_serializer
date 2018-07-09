@@ -203,9 +203,7 @@ module JsonschemaSerializer
     #   end
 
     def array(name, items:, **opts)
-      {
-        name => { type: :array, items: items }.merge(opts)
-      }
+      JsonschemaSerializer::Types::Array.named(name, items: items, **opts)
     end
   end
 end
