@@ -222,6 +222,7 @@ RSpec.describe JsonschemaSerializer::Builder do
   describe 'dsl for empty types' do
     subject { builder.new }
 
+    it { expect(subject._boolean).to eq(JsonschemaSerializer::Types::Boolean.empty) }
     it { expect(subject._integer).to eq(JsonschemaSerializer::Types::Integer.empty) }
     it { expect(subject._number).to eq(JsonschemaSerializer::Types::Number.empty) }
     it { expect(subject._object).to eq(JsonschemaSerializer::Types::Object.empty) }

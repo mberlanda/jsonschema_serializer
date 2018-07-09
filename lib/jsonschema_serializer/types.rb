@@ -32,14 +32,23 @@ module JsonschemaSerializer
       end
     end
 
-    # Object type for jsonschema serializer
-    class Object < JsonschemaSerializer::Types::Base
+    # Boolean type for jsonschema serializer
+    class Boolean < JsonschemaSerializer::Types::Base
       class << self
         # Default Hash structure
         def default_hash
-          { type: :object, properties: {} }
+          { type: :boolean }
         end
-        # initialize a empty object
+      end
+    end
+
+    # Integer type for jsonschema serializer
+    class Integer < JsonschemaSerializer::Types::Base
+      class << self
+        # Default Hash structure
+        def default_hash
+          { type: :integer }
+        end
       end
     end
 
@@ -53,13 +62,14 @@ module JsonschemaSerializer
       end
     end
 
-    # Integer type for jsonschema serializer
-    class Integer < JsonschemaSerializer::Types::Base
+    # Object type for jsonschema serializer
+    class Object < JsonschemaSerializer::Types::Base
       class << self
         # Default Hash structure
         def default_hash
-          { type: :integer }
+          { type: :object, properties: {} }
         end
+        # initialize a empty object
       end
     end
 

@@ -75,4 +75,19 @@ RSpec.describe 'JsonschemaSerializer types' do
       )
     end
   end
+
+  describe JsonschemaSerializer::Types::Boolean do
+    subject { JsonschemaSerializer::Types::Boolean }
+
+    it { expect(subject.superclass).to eq(JsonschemaSerializer::Types::Base) }
+    it { expect(subject.default_hash).to eq(type: :boolean) }
+    it { expect(subject.empty).to eq(type: :boolean) }
+    it { expect(subject.empty(a: 1)).to eq(type: :boolean, a: 1) }
+    it { expect(subject.named(:foo)).to eq(foo: { type: :boolean }) }
+    it do
+      expect(subject.named(:foo, bar: :baz)).to eq(
+        foo: { type: :boolean, bar: :baz }
+      )
+    end
+  end
 end

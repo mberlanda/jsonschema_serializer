@@ -77,7 +77,7 @@ module JsonschemaSerializer
 
     # A base representation of the +boolean+ type.
     def _boolean(**opts)
-      { type: :boolean }.merge(opts)
+      JsonschemaSerializer::Types::Boolean.empty(**opts)
     end
 
     # A property representation of the +boolean+ type.
@@ -91,7 +91,7 @@ module JsonschemaSerializer
     # +title+:: +String+ property title
 
     def boolean(name, **opts)
-      { name => _boolean(opts) }
+      JsonschemaSerializer::Types::Boolean.named(name, **opts)
     end
 
     # A base representation of the +integer+ type.
