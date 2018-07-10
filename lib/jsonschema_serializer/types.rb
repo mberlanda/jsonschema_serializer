@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'json'
+require_relative 'error'
 
 module JsonschemaSerializer
   # +Hash+ class with some extended methods
@@ -152,6 +152,36 @@ module JsonschemaSerializer
         # Default Hash structure
         def default_hash
           FutureHash[{ type: :object, properties: {} }]
+        end
+
+        # Allowed class attributes declaration
+        def allowed_class_attributes
+          super.concat([@required, @properties])
+        end
+
+        # The +required+ method allows to provide a list of required properties
+        #
+        # params:
+        # +required+ [Array[String, Symbol]]
+
+        def required(*required)
+          @required = { required: required }
+        end
+
+        # The +properties+ method allows to access object properties
+        #
+        # e.g.:
+        #   class CustomObject < JsonschemaSerializer::Types::Object
+        #     properties(
+        #       JsonschemaSerializer::Types::String.named(:foo),
+        #       JsonschemaSerializer::Types::Boolean.named(:bar)
+        #     )
+        #   end
+
+        def properties(*properties)
+          raise JsonschemaSerializer::DuplicatedObjectPropertyError if @properties
+          props = properties.reduce({}) { |h, prop| h.merge(prop) }
+          @properties = { properties: props }
         end
       end
     end

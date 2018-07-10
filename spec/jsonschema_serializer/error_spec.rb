@@ -8,4 +8,12 @@ RSpec.describe 'JsonschemaSerializer errors' do
       end.to raise_error(ArgumentError)
     end
   end
+
+  context 'DuplicatedObjectPropertyError' do
+    it 'should be an ArgumentError' do
+      expect do
+        raise JsonschemaSerializer::DuplicatedObjectPropertyError, 'a custom message'
+      end.to raise_error(ArgumentError)
+    end
+  end
 end

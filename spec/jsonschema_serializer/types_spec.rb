@@ -154,6 +154,11 @@ RSpec.describe 'JsonschemaSerializer types' do
         title 'ObjectSerializer'
         description 'a dummy serializer for testing purposes'
         default '{}'
+        required :a, :b
+        properties(
+          JsonschemaSerializer::Types::Boolean.named(:a),
+          JsonschemaSerializer::Types::String.named(:b)
+        )
       end
 
       it 'should include class level attribute declaration' do
@@ -162,7 +167,11 @@ RSpec.describe 'JsonschemaSerializer types' do
           description: 'a dummy serializer for testing purposes',
           default: '{}',
           type: :object,
-          properties: {}
+          properties: {
+            a: { type: :boolean },
+            b: { type: :string }
+          },
+          required: [:a, :b]
         )
       end
     end
