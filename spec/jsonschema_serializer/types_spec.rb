@@ -14,6 +14,36 @@ RSpec.describe 'JsonschemaSerializer types' do
     it { subject.respond_to?(:named) }
     it { expect(subject.named(:foo)).to eq(foo: {}) }
     it { expect(subject.named(:foo, bar: :baz)).to eq(foo: { bar: :baz }) }
+
+    it { subject.respond_to?(:allowed_class_attributes) }
+    it { subject.respond_to?(:title) }
+    it { subject.respond_to?(:description) }
+    it { subject.respond_to?(:default) }
+    it { expect(subject.allowed_class_attributes).to eq([nil, nil, nil]) }
+
+    it { subject.respond_to?(:class_attributes) }
+    it { expect(subject.class_attributes).to eq([]) }
+
+    context 'a subclass' do
+      class PartialSerializer < JsonschemaSerializer::Types::Base
+        title 'a title'
+      end
+
+      it 'PartialSerializer.allowed_class_attributes' do
+        expect(PartialSerializer.allowed_class_attributes).to match_array(
+          [{ title: 'a title' }, nil, nil]
+        )
+      end
+
+      it 'PartialSerializer.class_attributes' do
+        expect(PartialSerializer.class_attributes)
+          .to match_array([{ title: 'a title' }])
+      end
+
+      it 'PartialSerializer.empty' do
+        expect(PartialSerializer.empty).to eq(title: 'a title')
+      end
+    end
   end
 
   describe JsonschemaSerializer::Types::Array do
@@ -52,6 +82,23 @@ RSpec.describe 'JsonschemaSerializer types' do
       expect(subject.named(:foo, bar: :baz)).to eq(
         foo: { type: :boolean, bar: :baz }
       )
+    end
+
+    context 'a subclass' do
+      class BooleanSerializer < JsonschemaSerializer::Types::Boolean
+        title 'BooleanSerializer'
+        description 'a dummy serializer for testing purposes'
+        default true
+      end
+
+      it 'should include class level attribute declaration' do
+        expect(BooleanSerializer.empty).to eq(
+          title: 'BooleanSerializer',
+          description: 'a dummy serializer for testing purposes',
+          default: true,
+          type: :boolean
+        )
+      end
     end
   end
 
@@ -97,6 +144,24 @@ RSpec.describe 'JsonschemaSerializer types' do
       expect(subject.named(:foo, bar: :baz)).to eq(
         foo: { type: :object, properties: {}, bar: :baz }
       )
+    end
+
+    context 'a subclass' do
+      class ObjectSerializer < JsonschemaSerializer::Types::Object
+        title 'ObjectSerializer'
+        description 'a dummy serializer for testing purposes'
+        default '{}'
+      end
+
+      it 'should include class level attribute declaration' do
+        expect(ObjectSerializer.empty).to eq(
+          title: 'ObjectSerializer',
+          description: 'a dummy serializer for testing purposes',
+          default: '{}',
+          type: :object,
+          properties: {}
+        )
+      end
     end
   end
 
