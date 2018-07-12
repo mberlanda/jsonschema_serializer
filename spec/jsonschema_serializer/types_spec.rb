@@ -51,7 +51,10 @@ RSpec.describe 'JsonschemaSerializer types' do
 
     it { expect(subject.superclass).to eq(JsonschemaSerializer::Types::Base) }
     it { expect(subject.default_hash).to eq(type: :array) }
+    it { expect(subject.new(items: {}).to_json).to eq(type: :array) }
 
+    let(:name) { :abc }
+    it { expect(subject.named(name, items: {})).to eq(name => {type: :array, items: {}}) }
     it 'needs items key' do
       expect { subject.new }.to raise_error(ArgumentError, /items/)
     end

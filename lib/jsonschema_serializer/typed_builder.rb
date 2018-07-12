@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-require 'json'
 require_relative 'types'
 
 module JsonschemaSerializer
   # The +JsonschemaSerializer::Builder+ class provides
   # an effective DSL to generate a valid json schema.
-  class TypedBuilder
+  class TypedBuilder < JsonschemaSerializer::Types::Object
     class << self
       # The +build+ class method create a new instance and applies the block
       def build
@@ -16,23 +15,10 @@ module JsonschemaSerializer
       end
     end
 
-    # An hash representation of the +schema+
-    attr_reader :schema
-
     # The +new+ method creates assigns a new object
     # to a +schema+ instance variable
-    def initialize
-      @schema ||= JsonschemaSerializer::Types::Object.new
-    end
-
-    # The +to_json+ method exports the schema as a json string
-    # By default it would exported with a pretty print
-    #
-    # Params:
-    # +pretty+:: +Boolean+
-
-    def to_json(pretty: true)
-      pretty ? JSON.pretty_generate(@schema) : @schema.to_json
+    def schema
+        self
     end
 
     # Assigns the +title+ to the root schema object
@@ -41,7 +27,7 @@ module JsonschemaSerializer
     # +title+:: +String+ or +Symbol+ title field of the schema object
 
     def title(title)
-      @schema[:title] = title
+      schema[:title] = title
     end
 
     # Assigns the +description+ to the root schema object
@@ -50,7 +36,7 @@ module JsonschemaSerializer
     # +description+:: +String+ description field of the schema object
 
     def description(description)
-      @schema[:description] = description
+      schema[:description] = description
     end
 
     # The +required+ method allows to provide a list of required properties
@@ -59,7 +45,7 @@ module JsonschemaSerializer
     # +required+ [Array[String, Symbol]]
 
     def required(*required)
-      @schema[:required] = required
+      schema[:required] = required
     end
 
     # The +properties+ method allows to access object properties
@@ -72,7 +58,7 @@ module JsonschemaSerializer
     #   end
 
     def properties
-      @schema[:properties] ||= {}
+      schema[:properties] ||= {}
     end
 
     # A base representation of the +boolean+ type.

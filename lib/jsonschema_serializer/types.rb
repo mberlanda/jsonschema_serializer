@@ -1,11 +1,23 @@
 # frozen_string_literal: true
 
+require 'json'
+
 module JsonschemaSerializer
   # +Hash+ class with some extended methods
   class FutureHash < Hash
     # Backport ruby 2.5 yield_self method
     def yield_self
       yield(self)
+    end
+
+    # The +to_json+ method exports the schema as a json string
+    # By default it would exported with a pretty print
+    #
+    # Params:
+    # +pretty+:: +Boolean+
+
+    def to_json(pretty: true)
+      pretty ? JSON.pretty_generate(self.dup) : super
     end
   end
 
