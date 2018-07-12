@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 require 'json'
+require_relative 'types'
 
 module JsonschemaSerializer
   # The +JsonschemaSerializer::Builder+ class provides
   # an effective DSL to generate a valid json schema.
-  class Builder
+  class TypedBuilder
     class << self
       # The +build+ class method create a new instance and applies the block
       def build
@@ -21,7 +22,7 @@ module JsonschemaSerializer
     # The +new+ method creates assigns an empty object
     # to a +schema+ instance variable
     def initialize
-      @schema ||= _object
+      @schema ||= JsonschemaSerializer::Types::Object.empty
     end
 
     # The +to_json+ method exports the schema as a json string
@@ -76,7 +77,7 @@ module JsonschemaSerializer
 
     # A base representation of the +boolean+ type.
     def _boolean(**opts)
-      { type: :boolean }.merge(opts)
+      JsonschemaSerializer::Types::Boolean.empty(**opts)
     end
 
     # A property representation of the +boolean+ type.
@@ -90,12 +91,12 @@ module JsonschemaSerializer
     # +title+:: +String+ property title
 
     def boolean(name, **opts)
-      { name => _boolean(opts) }
+      JsonschemaSerializer::Types::Boolean.named(name, **opts)
     end
 
     # A base representation of the +integer+ type.
     def _integer(**opts)
-      { type: :integer }.merge(opts)
+      JsonschemaSerializer::Types::Integer.empty(**opts)
     end
 
     # A property representation of the +integer+ type.
@@ -113,12 +114,12 @@ module JsonschemaSerializer
     # +multipleOf+:: +Integer+ property conditional constraint
 
     def integer(name, **opts)
-      { name => _integer(opts) }
+      JsonschemaSerializer::Types::Integer.named(name, **opts)
     end
 
     # A base representation of the +number+ type.
     def _number(**opts)
-      { type: :number }.merge(opts)
+      JsonschemaSerializer::Types::Number.empty(**opts)
     end
 
     # A property representation of the +number+ type.
@@ -136,12 +137,12 @@ module JsonschemaSerializer
     # +multipleOf+:: +Numeric+ property conditional constraint
 
     def number(name, **opts)
-      { name => _number(opts) }
+      JsonschemaSerializer::Types::Number.named(name, **opts)
     end
 
     # A base representation of the +string+ type.
     def _string(**opts)
-      { type: :string }.merge(opts)
+      JsonschemaSerializer::Types::String.empty(**opts)
     end
 
     # A property representation of the +string+ type.
@@ -157,7 +158,7 @@ module JsonschemaSerializer
     # +minLength+:: +Int+ property minimum length
 
     def string(name, **opts)
-      { name => _string(opts) }
+      JsonschemaSerializer::Types::String.named(name, **opts)
     end
 
     # A base representation of the +object+ type.
@@ -171,7 +172,7 @@ module JsonschemaSerializer
     #   end
 
     def _object(**opts)
-      { type: :object, properties: {} }.merge(opts).tap do |h|
+      JsonschemaSerializer::Types::Object.empty(**opts).tap do |h|
         yield(h[:properties]) if block_given?
       end
     end
@@ -202,9 +203,7 @@ module JsonschemaSerializer
     #   end
 
     def array(name, items:, **opts)
-      {
-        name => { type: :array, items: items }.merge(opts)
-      }
+      JsonschemaSerializer::Types::Array.named(name, items: items, **opts)
     end
   end
 end
