@@ -19,10 +19,10 @@ module JsonschemaSerializer
     # An hash representation of the +schema+
     attr_reader :schema
 
-    # The +new+ method creates assigns an empty object
+    # The +new+ method creates assigns a new object
     # to a +schema+ instance variable
     def initialize
-      @schema ||= JsonschemaSerializer::Types::Object.empty
+      @schema ||= JsonschemaSerializer::Types::Object.new
     end
 
     # The +to_json+ method exports the schema as a json string
@@ -77,7 +77,7 @@ module JsonschemaSerializer
 
     # A base representation of the +boolean+ type.
     def _boolean(**opts)
-      JsonschemaSerializer::Types::Boolean.empty(**opts)
+      JsonschemaSerializer::Types::Boolean.new(**opts)
     end
 
     # A property representation of the +boolean+ type.
@@ -96,7 +96,7 @@ module JsonschemaSerializer
 
     # A base representation of the +integer+ type.
     def _integer(**opts)
-      JsonschemaSerializer::Types::Integer.empty(**opts)
+      JsonschemaSerializer::Types::Integer.new(**opts)
     end
 
     # A property representation of the +integer+ type.
@@ -119,7 +119,7 @@ module JsonschemaSerializer
 
     # A base representation of the +number+ type.
     def _number(**opts)
-      JsonschemaSerializer::Types::Number.empty(**opts)
+      JsonschemaSerializer::Types::Number.new(**opts)
     end
 
     # A property representation of the +number+ type.
@@ -142,7 +142,7 @@ module JsonschemaSerializer
 
     # A base representation of the +string+ type.
     def _string(**opts)
-      JsonschemaSerializer::Types::String.empty(**opts)
+      JsonschemaSerializer::Types::String.new(**opts)
     end
 
     # A property representation of the +string+ type.
@@ -172,7 +172,7 @@ module JsonschemaSerializer
     #   end
 
     def _object(**opts)
-      JsonschemaSerializer::Types::Object.empty(**opts).tap do |h|
+      JsonschemaSerializer::Types::Object.new(**opts).tap do |h|
         yield(h[:properties]) if block_given?
       end
     end

@@ -7,9 +7,9 @@ RSpec.describe 'JsonschemaSerializer types' do
     it { subject.respond_to?(:default_hash) }
     it { expect(subject.default_hash).to eq({}) }
 
-    it { subject.respond_to?(:empty) }
-    it { expect(subject.empty).to eq({}) }
-    it { expect(subject.empty(a: 1)).to eq(a: 1) }
+    it { subject.respond_to?(:new) }
+    it { expect(subject.new).to eq({}) }
+    it { expect(subject.new(a: 1)).to eq(a: 1) }
 
     it { subject.respond_to?(:named) }
     it { expect(subject.named(:foo)).to eq(foo: {}) }
@@ -40,8 +40,8 @@ RSpec.describe 'JsonschemaSerializer types' do
           .to match_array([{ title: 'a title' }])
       end
 
-      it 'PartialSerializer.empty' do
-        expect(PartialSerializer.empty).to eq(title: 'a title')
+      it 'PartialSerializer.new' do
+        expect(PartialSerializer.new).to eq(title: 'a title')
       end
     end
   end
@@ -53,10 +53,10 @@ RSpec.describe 'JsonschemaSerializer types' do
     it { expect(subject.default_hash).to eq(type: :array) }
 
     it 'needs items key' do
-      expect { subject.empty }.to raise_error(ArgumentError, /items/)
+      expect { subject.new }.to raise_error(ArgumentError, /items/)
     end
 
-    it { expect(subject.empty(items: {})).to eq(type: :array, items: {}) }
+    it { expect(subject.new(items: {})).to eq(type: :array, items: {}) }
     it do
       expect(subject.named(:foo, items: {})).to eq(
         foo: { type: :array, items: {} }
@@ -75,8 +75,8 @@ RSpec.describe 'JsonschemaSerializer types' do
 
     it { expect(subject.superclass).to eq(JsonschemaSerializer::Types::Base) }
     it { expect(subject.default_hash).to eq(type: :boolean) }
-    it { expect(subject.empty).to eq(type: :boolean) }
-    it { expect(subject.empty(a: 1)).to eq(type: :boolean, a: 1) }
+    it { expect(subject.new).to eq(type: :boolean) }
+    it { expect(subject.new(a: 1)).to eq(type: :boolean, a: 1) }
     it { expect(subject.named(:foo)).to eq(foo: { type: :boolean }) }
     it do
       expect(subject.named(:foo, bar: :baz)).to eq(
@@ -92,7 +92,7 @@ RSpec.describe 'JsonschemaSerializer types' do
       end
 
       it 'should include class level attribute declaration' do
-        expect(BooleanSerializer.empty).to eq(
+        expect(BooleanSerializer.new).to eq(
           title: 'BooleanSerializer',
           description: 'a dummy serializer for testing purposes',
           default: true,
@@ -107,8 +107,8 @@ RSpec.describe 'JsonschemaSerializer types' do
 
     it { expect(subject.superclass).to eq(JsonschemaSerializer::Types::Base) }
     it { expect(subject.default_hash).to eq(type: :integer) }
-    it { expect(subject.empty).to eq(type: :integer) }
-    it { expect(subject.empty(a: 1)).to eq(type: :integer, a: 1) }
+    it { expect(subject.new).to eq(type: :integer) }
+    it { expect(subject.new(a: 1)).to eq(type: :integer, a: 1) }
     it { expect(subject.named(:foo)).to eq(foo: { type: :integer }) }
     it do
       expect(subject.named(:foo, bar: :baz)).to eq(
@@ -122,8 +122,8 @@ RSpec.describe 'JsonschemaSerializer types' do
 
     it { expect(subject.superclass).to eq(JsonschemaSerializer::Types::Base) }
     it { expect(subject.default_hash).to eq(type: :number) }
-    it { expect(subject.empty).to eq(type: :number) }
-    it { expect(subject.empty(a: 1)).to eq(type: :number, a: 1) }
+    it { expect(subject.new).to eq(type: :number) }
+    it { expect(subject.new(a: 1)).to eq(type: :number, a: 1) }
     it { expect(subject.named(:foo)).to eq(foo: { type: :number }) }
     it do
       expect(subject.named(:foo, bar: :baz)).to eq(
@@ -137,8 +137,8 @@ RSpec.describe 'JsonschemaSerializer types' do
 
     it { expect(subject.superclass).to eq(JsonschemaSerializer::Types::Base) }
     it { expect(subject.default_hash).to eq(type: :object, properties: {}) }
-    it { expect(subject.empty).to eq(type: :object, properties: {}) }
-    it { expect(subject.empty(a: 1)).to eq(type: :object, properties: {}, a: 1) }
+    it { expect(subject.new).to eq(type: :object, properties: {}) }
+    it { expect(subject.new(a: 1)).to eq(type: :object, properties: {}, a: 1) }
     it { expect(subject.named(:foo)).to eq(foo: { type: :object, properties: {} }) }
     it do
       expect(subject.named(:foo, bar: :baz)).to eq(
@@ -154,7 +154,7 @@ RSpec.describe 'JsonschemaSerializer types' do
       end
 
       it 'should include class level attribute declaration' do
-        expect(ObjectSerializer.empty).to eq(
+        expect(ObjectSerializer.new).to eq(
           title: 'ObjectSerializer',
           description: 'a dummy serializer for testing purposes',
           default: '{}',
@@ -170,8 +170,8 @@ RSpec.describe 'JsonschemaSerializer types' do
 
     it { expect(subject.superclass).to eq(JsonschemaSerializer::Types::Base) }
     it { expect(subject.default_hash).to eq(type: :string) }
-    it { expect(subject.empty).to eq(type: :string) }
-    it { expect(subject.empty(a: 1)).to eq(type: :string, a: 1) }
+    it { expect(subject.new).to eq(type: :string) }
+    it { expect(subject.new(a: 1)).to eq(type: :string, a: 1) }
     it { expect(subject.named(:foo)).to eq(foo: { type: :string }) }
     it do
       expect(subject.named(:foo, bar: :baz)).to eq(

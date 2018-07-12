@@ -1,36 +1,48 @@
 # frozen_string_literal: true
 
 module JsonschemaSerializer
+  # +Hash+ class with some extended methods
+  class FutureHash < Hash
+    # Backport ruby 2.5 yield_self method
+    def yield_self
+      yield(self)
+    end
+  end
+
   # This module contains types declarations
   module Types
     # Base type from which all other types inherit
-    class Base < Hash
-      # Backport ruby 2.5 yield_self method
-      def yield_self
-        yield(self)
-      end
-
+    class Base < JsonschemaSerializer::FutureHash
       class << self
-        # Default Hash structure. This should be implemented in
+        # Default FutureHash structure. This should be implemented in
         # every subclass
         def default_hash
-          {}
+          FutureHash.new
         end
 
-        # Initialize an empty object with the default hash attributes
-        def empty(**opts)
-          new
-            .yield_self { |h| h.merge(default_hash) }
+        # Default Hash structure merged with class attributes and instance options
+        def processed_hash(**opts)
+          default_hash
             .yield_self { |h| class_attributes.reduce(h) { |h1, a| h1.merge(a) } }
             .merge(opts)
         end
 
-        # Initialize an empty object with name as key
-        def named(name, **opts)
-          new
-            .yield_self do |h|
-              h.merge(name => empty(**opts))
+        # Initialize a new object with the default hash attributes
+        def new(**opts)
+          super.yield_self do |h|
+            if !@name.nil?
+              # Merge with name and reset it after the creation
+              h.merge(@name => processed_hash(**opts)).tap { @name = nil }
+            else
+              h.merge(processed_hash(**opts))
             end
+          end
+        end
+
+        # Initialize a new object with name as key
+        def named(name, **opts)
+          @name = name
+          new(**opts)
         end
 
         # Allowed class attributes declaration
@@ -77,18 +89,17 @@ module JsonschemaSerializer
       class << self
         # Default Hash structure
         def default_hash
-          { type: :array }
+          FutureHash[{ type: :array }]
         end
 
-        # Default empty array
+        # Default new array
         #
         # Params:
         # +items+:: an object representation or an array of objects
         #
 
-        def empty(items:, **opts)
-          super(**opts)
-            .yield_self { |h| h.merge(items: items) }
+        def new(items:, **opts)
+          super(items: items, **opts)
         end
       end
     end
@@ -98,7 +109,7 @@ module JsonschemaSerializer
       class << self
         # Default Hash structure
         def default_hash
-          { type: :boolean }
+          FutureHash[{ type: :boolean }]
         end
       end
     end
@@ -108,7 +119,7 @@ module JsonschemaSerializer
       class << self
         # Default Hash structure
         def default_hash
-          { type: :integer }
+          FutureHash[{ type: :integer }]
         end
       end
     end
@@ -118,7 +129,7 @@ module JsonschemaSerializer
       class << self
         # Default Hash structure
         def default_hash
-          { type: :number }
+          FutureHash[{ type: :number }]
         end
       end
     end
@@ -128,7 +139,7 @@ module JsonschemaSerializer
       class << self
         # Default Hash structure
         def default_hash
-          { type: :object, properties: {} }
+          FutureHash[{ type: :object, properties: {} }]
         end
       end
     end
@@ -138,7 +149,7 @@ module JsonschemaSerializer
       class << self
         # Default Hash structure
         def default_hash
-          { type: :string }
+          FutureHash[{ type: :string }]
         end
       end
     end
